@@ -4,7 +4,7 @@ public class ScrewClickHandler : MonoBehaviour
 {
     private Animator animator;
     private bool isRemoved = false;
-    public Block parentBlock; 
+    public Block parentBlock;
 
     void Start()
     {
