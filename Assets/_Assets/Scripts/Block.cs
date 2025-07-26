@@ -10,6 +10,7 @@ public class Block : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeAll;
+        GameManager.Instance.RegisterBlock(this);
     }
 
     public void RegisterScrew()
@@ -28,8 +29,14 @@ public class Block : MonoBehaviour
 
     void Fall()
     {
-        float timefall = 1.5f;
+        float TimeDelay = 2f;
         rb.constraints = RigidbodyConstraints.None;
-        Destroy(gameObject, timefall); 
+        Invoke(nameof(Unregister), TimeDelay);
+    }
+
+    void Unregister()
+    {
+        GameManager.Instance.UnregisterBlock(this);
+        gameObject.SetActive(false); 
     }
 }

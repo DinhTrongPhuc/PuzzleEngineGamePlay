@@ -53,14 +53,12 @@ public class TouchRotate : MonoBehaviour
     {
         Camera cam = Camera.main;
 
-        // Trục xoay theo hướng camera
-        Vector3 horizontalAxis = cam.transform.up;       // Xoay quanh trục Y của camera
-        Vector3 verticalAxis = cam.transform.right;      // Xoay quanh trục X của camera
+        Vector3 horizontalAxis = cam.transform.up;       
+        Vector3 verticalAxis = cam.transform.right;      
 
         float rotX = -delta.y * rotationSpeed;
         float rotY = delta.x * rotationSpeed;
 
-        // Xoay quanh trục giữa màn hình (theo góc nhìn camera)
         transform.Rotate(horizontalAxis, rotY, Space.World);
         transform.Rotate(verticalAxis, rotX, Space.World);
     }

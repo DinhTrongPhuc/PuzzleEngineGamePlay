@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -9,9 +9,10 @@ public class GameUIManager : MonoBehaviour
     public Button buttonZoomOut;
     public Button buttonRetry;
     public TextMeshProUGUI textLevel;
-    public GameObject losePanel; 
+    public GameObject losePanel;
+    public GameObject winPanel;
 
-    public Transform targetToZoom; 
+    public Transform targetToZoom;
     public float zoomStep = 0.1f;
     public int currentLevel = 1;
 
@@ -23,6 +24,7 @@ public class GameUIManager : MonoBehaviour
 
         UpdateLevelText();
         HideLoseUI();
+        HideWinUI();
     }
 
     void Zoom(int direction)
@@ -47,6 +49,16 @@ public class GameUIManager : MonoBehaviour
     public void HideLoseUI()
     {
         losePanel.SetActive(false);
+    }
+
+    public void ShowWinUI()
+    {
+        winPanel.SetActive(true);
+    }
+
+    public void HideWinUI()
+    {
+        winPanel.SetActive(false);
     }
 
     void UpdateLevelText()

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ScrewClickHandler : MonoBehaviour
+public class ScrewClickHandle : MonoBehaviour
 {
     private Animator animator;
     private bool isRemoved = false;
@@ -14,7 +14,7 @@ public class ScrewClickHandler : MonoBehaviour
         {
             parentBlock.RegisterScrew();
         }
-        GameManager.Instance.AddScrew(); 
+        GameManager.Instance.AddScrew();
     }
 
     public void OnClickManually()
@@ -39,7 +39,7 @@ public class ScrewClickHandler : MonoBehaviour
             parentBlock.OnScrewRemoved();
         }
 
-        GameManager.Instance.RemoveScrew(); 
+        GameManager.Instance.RemoveScrew();
     }
 
     void HideScrew()

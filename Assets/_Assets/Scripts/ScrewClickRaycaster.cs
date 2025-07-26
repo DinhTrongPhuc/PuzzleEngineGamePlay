@@ -12,7 +12,7 @@ public class ScrewClickRaycaster : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, screwLayer))
             {
-                ScrewClickHandler screw = hit.collider.GetComponent<ScrewClickHandler>();
+                ScrewClickHandle screw = hit.collider.GetComponent<ScrewClickHandle>();
                 if (screw != null)
                 {
                     screw.OnClickManually();
