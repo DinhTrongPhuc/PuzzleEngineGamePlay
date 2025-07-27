@@ -2,14 +2,16 @@
 
 public class Block : MonoBehaviour
 {
-    public int screwCount = 0;
-    private int removedScrews = 0;
+    public int screwCount = 0;              
+    private int removedScrews = 0;          
     private Rigidbody rb;
+    private bool hasFallen = false;        
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeAll;
+
         GameManager.Instance.RegisterBlock(this);
     }
 
@@ -21,7 +23,7 @@ public class Block : MonoBehaviour
     public void OnScrewRemoved()
     {
         removedScrews++;
-        if (removedScrews >= screwCount)
+        if (removedScrews >= screwCount && !hasFallen)
         {
             Fall();
         }
@@ -29,14 +31,23 @@ public class Block : MonoBehaviour
 
     void Fall()
     {
-        float TimeDelay = 2f;
+        hasFallen = true;
+
         rb.constraints = RigidbodyConstraints.None;
-        Invoke(nameof(Unregister), TimeDelay);
+
+        Invoke(nameof(Unregister), 5f);
     }
 
     void Unregister()
     {
         GameManager.Instance.UnregisterBlock(this);
-        gameObject.SetActive(false); 
+
+        gameObject.SetActive(false);
     }
+
+    public bool IsAllScrewsRemoved()
+    {
+        return removedScrews >= screwCount;
+    }
+
 }

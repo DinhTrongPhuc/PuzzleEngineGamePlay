@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 3197513961526329370}
   - component: {fileID: 5210735599545384166}
   m_Layer: 0
-  m_Name: BoxOfScrew
+  m_Name: BoxOfScrew_Blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

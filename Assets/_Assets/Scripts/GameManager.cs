@@ -6,16 +6,24 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [Header("Level Management")]
-    public Transform levelHolder;              
+    [Header("Level Holder")]
+    public Transform levelHolder;
+    private GameObject[] levelList;
     private int currentLevelIndex = 0;
 
     [Header("UI Management")]
-    public GameUIManager uiManager;            
+    public GameUIManager uiManager;
+
+    public List<Block> blocks = new List<Block>();
+    public List<ScrewClickHandle> screwsOnBoard = new List<ScrewClickHandle>();
+    public List<ScrewClickHandle> screwsInTemp = new List<ScrewClickHandle>();
+    public List<ScrewClickHandle> screwsInBox = new List<ScrewClickHandle>();
 
     private int totalScrews = 0;
     private int removedScrews = 0;
     private List<Block> activeBlocks = new List<Block>();
+
+    private bool gameEnded = false;
 
     void Awake()
     {
@@ -23,22 +31,22 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    void Start()
+    private void Start()
     {
-        foreach (Transform level in levelHolder)
-        {
-            level.gameObject.SetActive(false);
-        }
+        Instance = this;
 
-        if (levelHolder.childCount >= 0)
+        int childCount = levelHolder.childCount;
+        levelList = new GameObject[childCount];
+        for (int i = 0; i < childCount; i++)
         {
-            levelHolder.GetChild(currentLevelIndex).gameObject.SetActive(true);
+            levelList[i] = levelHolder.GetChild(i).gameObject;
+            levelList[i].SetActive(false);
         }
-
-        if (uiManager != null)
-        {
-            uiManager.HideWinUI();
-        }
+        currentLevelIndex = 0;
+        levelList[currentLevelIndex].SetActive(true);
+        uiManager?.UpdateLevel(currentLevelIndex + 1);
+        uiManager?.HideWinUI();
+        uiManager?.HideLoseUI();
     }
 
     public void AddScrew()
@@ -49,9 +57,10 @@ public class GameManager : MonoBehaviour
     public void RemoveScrew()
     {
         removedScrews++;
+
         if (removedScrews >= totalScrews)
         {
-            Invoke(nameof(CheckWinCondition), 1f);
+            Invoke(nameof(CheckWinCondition), 0.5f);
         }
     }
 
@@ -74,49 +83,92 @@ public class GameManager : MonoBehaviour
         if (activeBlocks.Contains(block))
             activeBlocks.Remove(block);
 
-        if (activeBlocks.Count == 0) //&& removedScrews >= totalScrews)
+        if (removedScrews >= totalScrews && activeBlocks.Count == 0)
         {
             WinGame();
         }
     }
 
+    public void RegisterScrew(ScrewClickHandle screw)
+    {
+        if (screw.state == ScrewState.OnBlock)
+            screwsOnBoard.Add(screw);
+        else if (screw.state == ScrewState.InTemp)
+            screwsInTemp.Add(screw);
+        else if (screw.state == ScrewState.InBox)
+            screwsInBox.Add(screw);
+    }
+
+    public void UnregisterScrew(ScrewClickHandle screw)
+    {
+        screwsOnBoard.Remove(screw);
+        screwsInTemp.Remove(screw);
+        screwsInBox.Remove(screw);
+    }
+
     void WinGame()
     {
+        if (gameEnded) return;
+        gameEnded = true;
+
         Debug.Log("YOU WIN!");
         if (uiManager != null)
         {
             uiManager.ShowWinUI();
         }
 
-        Invoke(nameof(NextLevel), 2f); 
+        Invoke(nameof(NextLevel), 2f);
     }
 
-    void NextLevel()
+    public void LoseGame()
     {
-        if (currentLevelIndex < levelHolder.childCount)
+        if (gameEnded) return;
+        gameEnded = true;
+
+        Debug.Log("YOU LOSE!");
+        if (uiManager != null)
         {
-            levelHolder.GetChild(currentLevelIndex).gameObject.SetActive(false);
+            uiManager.ShowLoseUI();
+        }
+    }
+
+    public void NextLevel()
+    {
+        if (currentLevelIndex + 1 >= levelList.Length)
+        {
+            Debug.Log("Đã hoàn thành tất cả level!");
+            return;
         }
 
+        levelList[currentLevelIndex].SetActive(false);
         currentLevelIndex++;
 
-        if (currentLevelIndex < levelHolder.childCount)
-        {
-            
-            levelHolder.GetChild(currentLevelIndex).gameObject.SetActive(true);
+        levelList[currentLevelIndex].SetActive(true);
 
-            
-            totalScrews = 0;
-            removedScrews = 0;
-            activeBlocks.Clear();
-
-            if (uiManager != null)
-                uiManager.HideWinUI();
-        }
-        else
+        blocks.Clear();
+        screwsOnBoard.Clear();
+        screwsInTemp.Clear();
+        Block[] allBlocks = levelList[currentLevelIndex].GetComponentsInChildren<Block>();
+        foreach (var block in allBlocks)
         {
-            Debug.Log("Đã hoàn thành tất cả các màn chơi!");
-            // TODO: Hiện UI End Game hoặc Restart
+            RegisterBlock(block);
         }
+
+        uiManager?.HideWinUI();
+        uiManager?.HideLoseUI();
+        uiManager?.UpdateLevel(currentLevelIndex + 1);
+    }
+
+    public void ClearLevelData()
+    {
+        blocks.Clear();
+        screwsOnBoard.Clear();
+        screwsInTemp.Clear();
+        screwsInBox.Clear();
+    }
+
+    public void RestartLevel()
+    {
+
     }
 }

@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6089619906290034600}
+  - component: {fileID: 4326525105384648254}
   - component: {fileID: 3009798474126056007}
   - component: {fileID: 4494823640569450442}
   m_Layer: 0
-  m_Name: BoxOfScrew (1)
+  m_Name: BoxOfScrew_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3453344330779180361}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.3464758, y: 0.61640465, z: -0.3464757, w: 0.61640453}
+  m_LocalRotation: {x: -0.34647605, y: 0.6164044, z: -0.34647605, w: 0.6164044}
   m_LocalPosition: {x: 2.341, y: 6.56, z: 5.78}
   m_LocalScale: {x: 1, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
@@ -36,6 +37,20 @@ Transform:
   - {fileID: 3648549162942902538}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -58.68}
+--- !u!114 &4326525105384648254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3453344330779180361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11b328ee96464af47aacf08445385ec4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 0, b: 0, a: 0}
+  maxScrews: 3
 --- !u!33 &3009798474126056007
 MeshFilter:
   m_ObjectHideFlags: 0

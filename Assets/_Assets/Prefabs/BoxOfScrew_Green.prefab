@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8406365746429400999}
   - component: {fileID: 1733279042196295209}
   m_Layer: 0
-  m_Name: BoxOfScrew (2)
+  m_Name: BoxOfScrew_Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
